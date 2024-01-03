@@ -1,0 +1,34 @@
+import os
+import sys
+import pyodbc
+import pandas as pd
+import mysql.connector
+
+
+# Configuración del entorno del notebook
+notebook_dir = os.path.dirname(os.path.abspath("__file__"))
+project_root = os.path.dirname(notebook_dir)
+
+# Añadir el directorio raíz del proyecto a sys.path para importaciones
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
+from config import XLSX_DIRECTORY
+
+
+
+# Leer archivo Excel
+df = pd.read_excel(os.path.join(XLSX_DIRECTORY, "speech.xlsx"))
+
+conexion = pyodbc.connect(
+    'DRIVER={SQL Server};'
+    'SERVER=DESKTOP-KP6A2O7;'
+    'DATABASE=NER;'
+    'Trusted_Connection=yes;'
+)
+
+
+# Asegúrate de que la conexión esté abierta
+if conexion.is_connected():
+    # Insertar datos del DataFrame a la base de datos
+    df.to_sql('speech', con=conexion, if_exists='append', index=False)
