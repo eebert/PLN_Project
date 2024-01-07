@@ -8,48 +8,65 @@ Este proyecto es para procesar y analizar datos de lenguaje natural.
 
 ## Estructura del Proyecto
 
-proyecto_pln/
+PLN_PROJECT/
 │
 ├── data/
-│   ├── pdf/                  # Almacenar aquí los archivos PDF
-│   ├── csv/                  # Almacenar aquí los archivos CSV
-│   └── xlsx/                 # Almacenar aquí los archivos XLSX
+│	├── pdf/                  	# Contiene los archivos PDF originales de los discursos.
+│   		├── speech_01.pdf # Ejemplo de archivo de discurso en formato PDF.
+│   		├── ...
+│
+│	├── txt/                  	# Almacena los archivos de texto procesados a partir de los PDFs.
+│   		├── speech_01.txt  # Ejemplo de archivo de texto de un discurso procesado.
+│   	├── ...
+│
+│	├── xlsx/                 	# Contiene archivos Excel con datos estructurados y resultados de análisis.
+│   	├── speech.xlsx       	# Datos de discursos procesados y almacenados en formato Excel.
+│    	├── sentence.xlsx     	# Datos de oraciones extraídas de los discursos para análisis.
+│    	├── ner_entity.xlsx   	# Entidades identificadas a través del análisis NER básico.
+│    	├── bert_entity.xlsx  	# Entidades identificadas con el modelo BERT.
+│    	├── roberta_entity.xlsx 	# Entidades identificadas con el modelo RoBERTa.
+│    	└── sentiment.xlsx    	# Resultados del análisis de sentimientos.
 │
 ├── notebooks/
-│   ├── 01_Download_Process_Speeches.ipynb # Descarga y Lectura de PDFs
-│   ├── 02_Text_Processing.ipynb        # Procesamiento de Texto
-│   ├── 03_EDA.ipynb                    # Análisis Exploratorio de Datos
-│   ├── 04_NER_Basic.ipynb              # Análisis de Entidades Nombradas Básico
-│   ├── 05_BERT_Analysis.ipynb          # Análisis Avanzado con BERT
-│   ├── 06_RoBERTa_Analysis.ipynb       # Análisis Avanzado con RoBERTa
-│   ├── 07_Sentiment_Analysis.ipynb     # Análisis de Sentimientos
-│   ├── 08_Visualizations.ipynb         # Visualizaciones
-│   └── 09_Main_Analysis.ipynb          # Análisis Principal y Flujo de Trabajo
+│   ├── 01_Download_Process_Speeches.ipynb 	# Descarga y procesamiento de discursos
+│   ├── 02_Text_Processing.ipynb           		# Limpieza y tokenización del texto
+│   ├── 03_EDA.ipynb                        			# Análisis Exploratorio de Datos (EDA)
+│   ├── 04_NER_Basic.ipynb                  			# Reconocimiento de Entidades Nombradas (NER) básico
+│   ├── 05_BERT_Analysis.ipynb              		# Análisis NER con modelo BERT
+│   ├── 06_RoBERTa_Analysis.ipynb           		# Análisis NER con modelo RoBERTa
+│   ├── 07_Sentiment_Analysis.ipynb         		# Análisis de Sentimientos
+│   ├── 08_Visualizations.ipynb             		# Visualizaciones de los resultados de análisis
+│   ├── 09_Visualizations.ipynb             		# Visualizaciones de los resultados de análisis
+│   └── 10_BD.ipynb                         			# Integración de datos y almacenamiento en base de datos
+│
+│
 ├── utils/
 │   ├── __init__.py
-│   ├── pdf_utils.py
-│   ├── data_utils.py
-│   ├── analysis_utils.py
-│   └── visualization_utils.py
+│   ├── file_utils.py             		# Funciones para manejar archivos
+│   ├── text_processing_utils.py  	# Funciones de preprocesamiento de texto
+│   ├── ner_utils.py              		# Funciones para NER básico y avanzado
+│   ├── sentiment_utils.py        	# Funciones para análisis de sentimientos
+│   └── visualization_utils.py    	# Funciones para generar visualizaciones
 │
-├── config.py                 # Configuraciones del proyecto
-└── requirements.txt          # Dependencias del proyecto
-
+├── config.py                    	# Configuración global del proyecto
+└── README.md                 	# Documentación general del proyecto
 
 ## Descripción de los Notebooks
-01_Download_and_Read_PDFs.ipynb: Descarga y lectura inicial de archivos PDF.
-02_EDA.ipynb: Análisis exploratorio para entender mejor los datos.
-03_Text_Processing.ipynb: Limpieza y preparación del texto para el análisis.
-04_NER_Basic.ipynb: Implementación de un análisis básico de entidades nombradas usando herramientas estándar como spaCy o NLTK.
-05_BERT_Analysis.ipynb: Uso del modelo BERT para tareas avanzadas de PLN, incluyendo una versión más sofisticada de NER.
-06_RoBERTa_Analysis.ipynb: Aplicación del modelo RoBERTa para tareas de PLN, similar a BERT pero explorando las diferencias y ventajas de RoBERTa.
-07_Sentiment_Analysis.ipynb: Análisis de sentimientos, que puede ser independiente o complementar los análisis de NER.
-08_Visualizations.ipynb: Creación de visualizaciones para interpretar los resultados de tus análisis.
-09_Main_Analysis.ipynb: Integración y análisis final, donde combinas los insights y resultados de los notebooks anteriores.
 
-## Consideraciones Finales
-Modularidad: La estructura permite trabajar en cada aspecto del proyecto de forma independiente, lo cual facilita la prueba y mantenimiento de cada parte.
-Flexibilidad: Se puedes ajustar o expandir la estructura propuesta según las necesidades específicas del proyecto.
-Documentación: Se documenta cada notebook claramente, explicando su propósito, el cómo se utiliza y cualquier dependencia o requisito previo necesario.
+01_Download_Process_Speeches.ipynb: Inicia el flujo de trabajo descargando y procesando los archivos PDF para extraer los textos.
+02_Text_Processing.ipynb: Continúa con el procesamiento del texto, preparándolo para el análisis.
+03_EDA.ipynb: Explora los datos para obtener una comprensión inicial y detectar patrones o anomalías.
+04_NER_Basic.ipynb: Realiza un análisis básico de NER utilizando herramientas como spaCy.
+05_BERT_Analysis.ipynb: Avanza hacia un análisis NER más sofisticado con el modelo BERT.
+06_RoBERTa_Analysis.ipynb: Explora el uso de RoBERTa, un modelo similar a BERT pero con diferencias clave.
+07_Sentiment_Analysis.ipynb: Evalúa el tono emocional de los discursos a través del análisis de sentimientos.
+08_Visualizations.ipynb: Crea visualizaciones para comunicar los hallazgos del análisis.
+09_Main_Analysis.ipynb: Combina todos los análisis individuales para formar un entendimiento comprensivo y cohesivo.
 
-En general la estructura propuesta proporciona un marco claro y lógico del proyecto de PLN, facilitando la gestión y el desarrollo del proyecto.
+## Consideraciones Adicionales
+
+- **Modularidad:** Cada componente del proyecto es independiente, lo que facilita la prueba y el mantenimiento del código.
+- **Flexibilidad:** La estructura es flexible y puede ajustarse o expandirse para satisfacer las necesidades del proyecto.
+- **Documentación:** Se proporciona documentación clara para cada notebook, describiendo su propósito y requisitos.
+
+La estructura y la documentación detallada ayudan a gestionar y desarrollar el proyecto de manera eficiente, promoviendo la claridad y la reproducibilidad del análisis.
