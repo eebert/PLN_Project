@@ -193,7 +193,7 @@ def save_text_to_file(text, file_path):
     write_txt_file(text, file_path)
 
 
-def process_pdfs_in_directory(
+def process_pdfs_in_directory_to_txt(
     pdf_directory, txt_directory, recreate_existing_files=False
 ):
     """

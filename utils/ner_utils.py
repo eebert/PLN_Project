@@ -19,14 +19,13 @@ def is_relevant_entity(entity, label):
         return False  # Excluir entidades muy cortas
 
     # Tipos específicos que son relevantes en el contexto político
-    relevant_types = ["DATE", "MONEY", "LAW", "PERCENT", "PERSON", "ORG", "GPE"]
-
-    if label in relevant_types:
-        return True
+    # relevant_types = ["DATE", "MONEY", "LAW", "PERCENT", "PERSON", "ORG", "GPE"]
+    # if label in relevant_types:
+    #    return True
 
     # Excluir entidades que contienen números pero no son de tipos específicos relevantes
-    if any(char.isdigit() for char in entity) and label not in relevant_types:
-        return False
+    # if any(char.isdigit() for char in entity) and label not in relevant_types:
+    #     return False
 
     return True
 
@@ -35,7 +34,6 @@ def extract_context_ner(doc, ent):
     start = max(ent.start - 5, 0)
     end = min(ent.end + 5, len(doc))
     return doc[start : ent.start].text + " [ENTIDAD] " + doc[ent.end : end].text
-
 
 
 
@@ -54,8 +52,21 @@ def normalize_entity(entity):
 
     # Normalizar acentos y caracteres especiales (opcional)
     # entity = unicodedata.normalize('NFD', entity).encode('ascii', 'ignore').decode('utf-8')
+    
+    # Eliminar espacios alrededor de guiones (actualización para manejar casos como COVID-19)
+    entity = re.sub(r'\s*-\s*', '-', entity)
 
     return entity
+
+
+def normalize_entity_bert(entity):
+    #por agregar
+    return entity.replace(" - ", "-").replace(" — ", "—")
+
+def normalize_entity_roberta(entity):
+    #por agregar
+    return entity.replace(" - ", "-").replace(" — ", "—")
+
 
 
 def cluster_entities(entity_data, num_clusters=10):
