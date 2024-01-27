@@ -4,12 +4,8 @@ import re
 from utils.file_utils import extract_metadata_from_filename, read_txt_file
 
 
+# Realiza la limpieza de data a nivel de Texto Completo.
 def clean_text(text):
-    """
-    Realiza la limpieza a nivel de texto completo.
-    Esta limpieza se aplica después de extraer el texto del PDF y antes de convertirlo en un archivo de texto plano.
-    Se enfoca en eliminar elementos no deseados como texto entre paréntesis y números, pero conservando caracteres especiales como acentos y ñ.
-    """
     text = re.sub(r"[\•\−\–\—\―]", "-", text)  # Normaliza guiones
     text = re.sub(
         r"(\w)-\s*\n\s*(\w)", r"\1\2", text
@@ -23,46 +19,20 @@ def clean_text(text):
     text = re.sub(
         r"[^\w\sáéíóúÁÉÍÓÚñÑüÜ.,;!?¡¿-]", "", text
     )  # Conserva letras (incluyendo acentos y "ñ"), números, espacios y caracteres comunes
-
     return text.strip()
 
 
+# Realiza la limpieza de data a nivel de oración.
 def clean_sentence(sentence):
-    """
-    Realiza la limpieza a nivel de oración.
-    Se enfoca en normalizar el texto sin eliminar información contextual crucial.
-    """
-    # Normalizar espacios (eliminar espacios extra)
-    sentence = re.sub(r"\s+", " ", sentence).strip()
-
-    # Eliminar espacios alrededor de los guiones (ajustado para coincidir con normalize_entity)
-    sentence = re.sub(r"\s*-\s*", "-", sentence)
-
-    # Otras normalizaciones (como convertir a minúsculas) pueden ir aquí si son necesarias
-    # sentence = sentence.lower()
-
+    sentence = re.sub(r"\s+", " ", sentence).strip()  # Elimina espasios extra
+    sentence = re.sub(
+        r"\s*-\s*", "-", sentence
+    )  # Eliminar espacios alrededor de los guiones
     return sentence
 
 
-
-# def clean_sentences(sentences):
-#    """Limpia cada oración en una lista de oraciones."""
-#    return [clean_sentence(sentence) for sentence in sentences]
-
-
-# def split_sentences(text):
-#    """Divide el texto en oraciones."""
-#    return sent_tokenize(text.strip())
-
-
+# Procesa los archivos de texto guardados y crea una lista de discursos.
 def process_speeches(text_directory):
-    """
-    Procesa los archivos de texto guardados y crea una lista de discursos.
-    Args:
-        text_directory (str): El directorio donde se almacenan los archivos de texto.
-    Returns:
-        list: Una lista de diccionarios con la información de los discursos.
-    """
     id_speech = 1
     speech_data = []
 
@@ -87,19 +57,11 @@ def process_speeches(text_directory):
                     }
                 )
                 id_speech += 1
-
     return speech_data
 
 
+# Procesa cada discurso en el conjunto de datos proporcionado, dividiéndolos en oraciones y realizando limpieza de texto.
 def process_sentence(speech_data, model):
-    """
-    Procesa cada discurso en el conjunto de datos proporcionado, dividiéndolos en oraciones y realizando limpieza de texto.
-    Args:
-        speech_data (DataFrame): Un DataFrame que contiene los datos de los discursos, incluyendo el texto crudo de cada discurso.
-        model (spacy.Language): Modelo de spaCy para la segmentación de oraciones.
-    Returns:
-        list: Una lista de diccionarios, donde cada diccionario contiene información sobre una oración individual.
-    """
     id_sentence = 1
     sentence_data = []
 
@@ -111,21 +73,20 @@ def process_sentence(speech_data, model):
         sentences = [sent.text.strip() for sent in doc.sents]
 
         for sentence_number, original_sentence in enumerate(sentences, start=1):
-            if clean_sentence:
-                cleaned_sentence = clean_sentence(
-                    original_sentence
-                )  # Limpieza a nivel de oración
-                sentence_data.append(
-                    {
-                        "id_sentence": id_sentence,
-                        "id_speech": speech["id_speech"],
-                        "sentence_number": sentence_number,
-                        "sentence_raw": original_sentence,
-                        "sentence_clean": cleaned_sentence,
-                        "sentence_length_raw": len(original_sentence.split()),
-                        "sentence_length_clean": len(cleaned_sentence.split()),
-                    }
-                )
+            cleaned_sentence = clean_sentence(
+                original_sentence
+            )  # Limpieza a nivel de oración
+            sentence_data.append(
+                {
+                    "id_sentence": id_sentence,
+                    "id_speech": speech["id_speech"],
+                    "sentence_number": sentence_number,
+                    "sentence_raw": original_sentence,
+                    "sentence_clean": cleaned_sentence,
+                    "sentence_length_raw": len(original_sentence.split()),
+                    "sentence_length_clean": len(cleaned_sentence.split()),
+                }
+            )
             id_sentence += 1
 
     return sentence_data

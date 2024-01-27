@@ -6,26 +6,26 @@ Este proyecto es para procesar y analizar datos de lenguaje natural.
 
 (Instrucciones sobre cómo configurar y ejecutar tu proyecto)
 
-## Estructura del Proyecto
+## Estructura de Implementación
 
-PLN_NER_PROJECT/
+PLN_NER/
 │
 ├── data/
-│	├── pdf/                  				# Contiene los archivos PDF originales de los discursos descargados del Bucket.
-│   		├── speech_01.pdf 			# Ejemplo de archivo de discurso en formato PDF.
+│	├── pdf/                  					# Contiene los archivos PDF originales de los discursos descargados del Bucket.
+│   		├── speech_01.pdf 				# Ejemplo de archivo de discurso en formato PDF.
 │   		├── ...
 │
-│	├── txt/                  				# Almacena los archivos de texto procesados a partir de los PDFs.
-│   		├── speech_01.txt  			# Ejemplo de archivo de texto de un discurso procesado.
+│	├── txt/                  					# Almacena los archivos de texto procesados a partir de los PDFs.
+│   		├── speech_01.txt  				# Ejemplo de archivo de texto de un discurso procesado.
 │   	├── ...
 │
-│	├── xlsx/                 				# Contiene archivos Excel con datos estructurados y resultados de análisis.
-│   	├── speech.xlsx       				# Datos de discursos procesados y almacenados en formato Excel.
-│    	├── sentence.xlsx     				# Datos de oraciones extraídas de los discursos para análisis.
-│    	├── ner_entity.xlsx   				# Entidades identificadas a través del análisis NER básico.
-│    	├── bert_entity.xlsx  				# Entidades identificadas con el modelo BERT.
-│    	├── roberta_entity.xlsx 				# Entidades identificadas con el modelo RoBERTa.
-│    	└── sentiment.xlsx    				# Resultados del análisis de sentimientos.
+│	├── xlsx/                 					# Contiene archivos Excel con datos estructurados y resultados de análisis.
+│   	├── speech.xlsx       					# Datos de discursos procesados y almacenados en formato Excel.
+│    	├── sentence.xlsx     					# Datos de oraciones extraídas de los discursos para análisis.
+│    	├── ner_entity.xlsx   					# Entidades identificadas a través del análisis NER básico.
+│    	├── bert_entity.xlsx  					# Entidades identificadas con el modelo BERT.
+│    	├── roberta_entity.xlsx 					# Entidades identificadas con el modelo RoBERTa.
+│    	└── sentiment.xlsx    					# Resultados del análisis de sentimientos.
 │
 ├── notebooks/
 │   ├── 01_Download_Process_Speeches.ipynb 	# Descarga y procesamiento de discursos
@@ -42,14 +42,14 @@ PLN_NER_PROJECT/
 │
 ├── utils/
 │   ├── __init__.py
-│   ├── file_utils.py             				# Funciones para manejar archivos
-│   ├── text_processing_utils.py  			# Funciones de preprocesamiento de texto
-│   ├── ner_utils.py              				# Funciones para NER básico y avanzado
-│   ├── sentiment_utils.py        			# Funciones para análisis de sentimientos
-│   └── visualization_utils.py    			# Funciones para generar visualizaciones
+│   ├── file_utils.py             					# Funciones para manejar archivos
+│   ├── text_processing_utils.py  				# Funciones de preprocesamiento de texto
+│   ├── ner_utils.py              					# Funciones para NER básico y avanzado
+│   ├── sentiment_utils.py        				# Funciones para análisis de sentimientos
+│   └── visualization_utils.py    				# Funciones para generar visualizaciones
 │
-├── config.py                    				# Configuración global del proyecto
-└── README.md                 				# Documentación general del proyecto
+├── config.py                    					# Configuración global del proyecto
+└── README.md                 					# Documentación general del proyecto
 
 ## Descripción de los Notebooks
 

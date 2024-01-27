@@ -1,72 +1,39 @@
 # utils/ner_utils.py
-import logging
 import re
-import spacy
-from initialize import check_and_download_spacy_model
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import KMeans
+import unicodedata
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
-from transformers import BertTokenizer, BertForTokenClassification
-from transformers import pipeline
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.cluster import KMeans
-from transformers import AutoTokenizer, AutoModelForTokenClassification, pipeline
 
+def clean_entity(entity):
+    if not entity.strip():
+        return None
 
-def is_relevant_entity(entity, label):
-    # Ejemplo de criterios ajustados
-    if len(entity) <= 2:
-        return False  # Excluir entidades muy cortas
+    if len(entity) == 1:
+        return None
 
-    # Tipos específicos que son relevantes en el contexto político
-    # relevant_types = ["DATE", "MONEY", "LAW", "PERCENT", "PERSON", "ORG", "GPE"]
-    # if label in relevant_types:
-    #    return True
+    # Omite entidades con solo caracteres no alfanuméricos
+    if re.match(r"^\W+$", entity):  #
+        return None
 
-    # Excluir entidades que contienen números pero no son de tipos específicos relevantes
-    # if any(char.isdigit() for char in entity) and label not in relevant_types:
-    #     return False
+    # Eliminar espacios antes de los signos de puntuación
+    entity = re.sub(r"\s([,;.!?])", r"\1", entity)
 
-    return True
-
-
-def extract_context_ner(doc, ent):
-    start = max(ent.start - 5, 0)
-    end = min(ent.end + 5, len(doc))
-    return doc[start : ent.start].text + " [ENTIDAD] " + doc[ent.end : end].text
-
-
-
-
+    return entity.strip()
 
 
 def normalize_entity(entity):
-    # Convertir a minúsculas para estandarizar
-    entity = entity.lower()
-
-    # Eliminar artículos y preposiciones comunes al principio
-    entity = re.sub(r"^(la |el |los |las |de )", "", entity)
-
-    # Eliminar espacios adicionales
-    entity = re.sub(r"\s+", " ", entity).strip()
-
-    # Normalizar acentos y caracteres especiales (opcional)
-    # entity = unicodedata.normalize('NFD', entity).encode('ascii', 'ignore').decode('utf-8')
-    
-    # Eliminar espacios alrededor de guiones (actualización para manejar casos como COVID-19)
-    entity = re.sub(r'\s*-\s*', '-', entity)
+    #entity = entity.lower()
+    entity = re.sub(r"\s+", " ", entity).strip()  # Elimina Espacios Adicionales
+    entity = re.sub(r"\s*[-—]\s*", "-", entity)  # Normaliza guiones y em-dashes.
+    # Elimina Preposiciones al inicio
+    #entity = re.sub( r"^(la |el |los |las |de )", "", entity ) 
+    # Normaliza acentos y caracteres especiales a su forma más simple
+    #entity = unicodedata.normalize('NFD', entity)
+    # Codifica en ASCII y decodifica de nuevo a UTF-8, eliminando caracteres que no son ASCII
+    #entity = entity.encode('ascii', 'ignore').decode('utf-8')
 
     return entity
-
-
-def normalize_entity_bert(entity):
-    #por agregar
-    return entity.replace(" - ", "-").replace(" — ", "—")
-
-def normalize_entity_roberta(entity):
-    #por agregar
-    return entity.replace(" - ", "-").replace(" — ", "—")
-
 
 
 def cluster_entities(entity_data, num_clusters=10):
@@ -94,3 +61,52 @@ def cluster_entities(entity_data, num_clusters=10):
         entity["entity_cluster"] = kmeans.labels_[i]
     return entity_data
 
+
+
+def process_sentences_and_extract_entities(
+    sentence_data, tokenizer, model, perform_ner_function, model_name
+):
+    # Se Calcula el numero total de oraciones y define los intervalos de impresión
+    total_sentences = len(sentence_data)
+    print_interval = max(total_sentences // 10, 1)
+
+    # Creación del DataFrame donde se almacerpa las entidades extraidas
+    entities_df = pd.DataFrame(
+        columns=[
+            f"id_{model_name}_entity",
+            "id_sentence",
+            "context",
+            "tag",
+            "raw_entity",
+            "entity",
+            "entity_cluster",
+        ]
+    )
+    id_entity = 1 
+
+    for index, row in sentence_data.iterrows():
+        if index % print_interval == 0:
+            print(
+                f"Procesando: {index}/{total_sentences} oraciones ({(index/total_sentences)*100:.2f}%)"
+            )
+
+        sentence = row["sentence_clean"] 
+        if isinstance(sentence, str) and sentence.strip():
+            id_sentence = row["id_sentence"]  
+
+            entities = perform_ner_function(sentence, tokenizer, model)
+
+            for entity_info in entities:
+                entities_df.loc[len(entities_df.index)] = {
+                    f"id_{model_name}_entity": id_entity,
+                    "id_sentence": id_sentence,
+                    "context": entity_info["context"],
+                    "tag": entity_info["tag"],
+                    "raw_entity": entity_info["raw_entity"],
+                    "entity": entity_info["normalized_entity"],
+                    "entity_cluster": None,
+                }
+                id_entity += 1
+
+    print("Procesamiento completado.")
+    return entities_df
