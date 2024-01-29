@@ -209,8 +209,11 @@ def rebuild_entity_from_subtokens_roberta(subtokens, tokenizer):
         # No hay necesidad de eliminar el espacio antes de los guiones porque RoBERTa no debería generarlos
         entity += decoded_token
 
-    # Normaliza los guiones después de la reconstrucción
-    entity = re.sub(r"\s?-\s?", "-", entity).strip()
+    # Normaliza guiones, puntos y signos de exclamación después de la reconstrucción
+    entity = re.sub(r"\s?-\s?", "-", entity)
+    entity = re.sub(r"\s?\.\s?", ".", entity)
+    entity = re.sub(r"\s?!\s?", "!", entity)
+    entity = re.sub(r"\s?¡\s?", "¡", entity).strip()
 
     return entity
 
@@ -233,13 +236,16 @@ def rebuild_entity_from_subtokens_bert(subtokens, tokenizer):
                 entity = entity[:-1]
         else:
             # Añade un espacio solo si el token anterior no es un guión y el actual no comienza con un guión.
-            if entity and not entity[-1] in "-—":
+            if entity and not entity[-1] in "-—.!¡":
                 entity += " "
 
         entity += decoded_token
 
     # Normaliza los guiones después de la reconstrucción
-    entity = re.sub(r"\s?-\s?", "-", entity).strip()
+    entity = re.sub(r"\s?-\s?", "-", entity)
+    entity = re.sub(r"\s?\.\s?", ".", entity)
+    entity = re.sub(r"\s?!\s?", "!", entity)
+    entity = re.sub(r"\s?¡\s?", "¡", entity).strip()
 
     return entity
 

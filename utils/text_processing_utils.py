@@ -24,7 +24,7 @@ def clean_text(text):
 
 # Realiza la limpieza de data a nivel de oración.
 def clean_sentence(sentence):
-    sentence = re.sub(r"\s+", " ", sentence).strip()  # Elimina espasios extra
+    sentence = re.sub(r"\s+", " ", sentence).strip()  # Elimina espacios extra
     sentence = re.sub(
         r"\s*-\s*", "-", sentence
     )  # Eliminar espacios alrededor de los guiones
@@ -68,7 +68,7 @@ def process_sentence(speech_data, model):
     for index, speech in speech_data.iterrows():
         cleaned_text = clean_text(
             speech["text_raw"]
-        )  # Limpieza a nive texto completo del discurso
+        )  # Limpieza a nivel texto completo del discurso
         doc = model(cleaned_text)  # Procesar el texto con spaCy para obtener oraciones
         sentences = [sent.text.strip() for sent in doc.sents]
 
