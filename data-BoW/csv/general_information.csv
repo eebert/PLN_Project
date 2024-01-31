@@ -1,0 +1,3 @@
+nombre_archivo_pdf,país,año,nombre del presidente,genero,edad,numero_de_paginas,numero_de_palabras,mayor_palabras_por_pagina,menor_palabras_por_pagina,promedio_palabras_por_pagina,numero_adjetivos,numero_sustantivos,numero_verbos
+Argentina_2022_Alberto_Fernandez.pdf,Argentina,2022,Alberto Fernandez,,,6,17442,747,353,631.8333333333334,127,516,488
+Argentina_2023_Javier_Milei.pdf,Argentina,2023,Javier Milei,,,6,24380,780,517,681.1666666666666,264,760,357

@@ -10,7 +10,35 @@ Este proyecto es para procesar y analizar datos de lenguaje natural.
 
 PLN_Project/
 │
-├── data/
+│├── data-BoW/
+│	├── pdf/                  						# Contiene los archivos PDF originales de los discursos descargados del Bucket.
+│   		├── speech_01.pdf 					# Ejemplo de archivo de discurso en formato PDF.
+│   		├── ...
+│
+│	├── csv/                  						# Contiene archivos csv datos estructurados y resultados de análisis.
+│   		├── general_information.csv  			# Contiene informacion resltante de los discursos
+│    		├── speech_evaluation.csv				# Contiene la evaluacion del discurso
+│    		├── topic_tidy_distribution.csv   			# Contiene distribución de los topicos en estructura tidy
+│   		├── topic_word_distribution.csv 			# Contiene distribución de las palabras por topicos
+│
+│	├── vocabulary/                 					# Conjunto de archivos por procesamiento
+│   		├── file.pdf_corpus.pkl      				# Conjunto de documentos preprocesados (o corpus) en formato binario.
+│    		├── file.pdf_lda_model.model    			# Modelo entrenado con los tópicos identificados del documento.
+│    		├── file.pdf_lda_model.model.expElogbeta.npy   # Son las probabilidades de los tópicos del modelo LDA.
+│    		├── file.pdf_lda_model.model.ideword  	# Es el mapeo de ID con las palabras identificadas, representa el vocabulario.
+│    		├── file.pdf_lda_model.model.state 		# Contiene las configuraciones y parámetros del modelo al momento de ser almacenado.
+│    		├── file.pdf_vocab.dict    				# Es el diccionario, asigna a cada palabra un ID. Se usa en PLN para representar el vocabulario.
+│   		├── ...
+│
+│├── data-EDA/
+│	├── pdf/                  						# Contiene los archivos PDF originales de los discursos descargados del Bucket.
+│   		├── speech_01.pdf 					# Ejemplo de archivo de discurso en formato PDF.
+│   		├── ...
+│
+│	├── xlsx/                  						#Contiene archivos Excel con datos estructurados y resultados de análisis.
+│    	└── tokenization.xlsx    						# Resultados de Tokenización
+│
+│├── data-NER/
 │	├── pdf/                  						# Contiene los archivos PDF originales de los discursos descargados del Bucket.
 │   		├── speech_01.pdf 					# Ejemplo de archivo de discurso en formato PDF.
 │   		├── ...
@@ -27,6 +55,18 @@ PLN_Project/
 │    	├── roberta_entity.xlsx 						# Entidades identificadas con el modelo RoBERTa.
 │    	└── sentiment.xlsx    						# Resultados del análisis de sentimientos.
 │
+│├── notebooks-BoW/
+│   ├── 01_General_Information_Speeches.ipynb 		# Procesamiento de discursos y captura de informacion general
+│   ├── 02_Analysis_Of_Polarization_Speeches.ipynb           # Analisis de impacto y visualizacion de frecuencias
+│   └── 03_Modeling_Of_Presidential_Speeches. ipynb	# Identificacion de topicos relacionados entre si.
+│
+│├── notebook-EDA/
+│   ├── 01_Load_Structured_Database_Tokenization.ipynb    # Carga y tokenización DB
+│   ├── 02_Coneixonsql_EDA_Distribution.ipynb          # Análisis distribución datos SQL
+│   ├── 03_Coneixonsql_EDA_Entity.ipynb                    # Exploración entidades DB
+│   ├── 04_Coneixonsql_EDA_Tokenization.ipynb         # Análisis tokenización DB
+│   └── 05_Coneixonsql_EDA_Valuation.ipynb             	# Valoración datos DB
+│
 │├── notebooks-NER/
 │   ├── 01_Download_Process_Speeches.ipynb 		# Descarga y procesamiento de discursos
 │   ├── 02_Text_Processing.ipynb           			# Limpieza y tokenización del texto
@@ -36,15 +76,7 @@ PLN_Project/
 │   ├── 06_RoBERTa_Analysis.ipynb           			# Análisis NER con modelo RoBERTa
 │   ├── 07_Sentiment_Analysis.ipynb         			# Análisis de Sentimientos
 │   ├── 08_Script_BD_Process.ipynb             			# Integración de datos y almacenamiento en base de datos
-│   ├── 09_Visualization.ipynb             				# Permite la visualizacion de los datos como etapa inicial
-│   └── 10_Main_Execution. ipynb                   		# Ejecuión de todos los notebooks.
-│
-│├── notebook-EDA/
-│   ├── 01_Load_Structured_Database_Tokenization.ipynb    # Carga y tokenización DB
-│   ├── 02_Coneixonsql_EDA_Distribution.ipynb          # Análisis distribución datos SQL
-│   ├── 03_Coneixonsql_EDA_Entity.ipynb                    # Exploración entidades DB
-│   ├── 04_Coneixonsql_EDA_Tokenization.ipynb         # Análisis tokenización DB
-│   └── 05_Coneixonsql_EDA_Valuation.ipynb             	# Valoración datos DB
+│   ├── 09_Main_Execution. ipynb                   		# Ejecuión de todos los notebooks.
 │
 ├── utils/
 │   ├── __init__.py
@@ -56,6 +88,8 @@ PLN_Project/
 │
 ├── config.py                    						# Configuración global del proyecto
 └── README.md                 						# Documentación general del proyecto
+
+# Contiene archivos Excel con datos estructurados y resultados de análisis.
 
 ## Descripción de los Notebooks
 
@@ -69,9 +103,7 @@ Notebook-NER
 06_RoBERTa_Analysis.ipynb: Explora el uso de RoBERTa, un modelo similar a BERT pero con diferencias clave.
 07_Sentiment_Analysis.ipynb: Evalúa el tono emocional de los discursos a través del análisis de sentimientos.
 08_Main_Analysis.ipynb: Combina todos los análisis individuales para formar un entendimiento comprensivo y cohesivo.
-09_Visualization.ipynb: Permite la visualizacion de los datos como etapa inicial
-10_Script_BD_Process.ipynb: Integra datos de archivo excel a un almacenamiento fisico en BD
-
+09_Script_BD_Process.ipynb: Integra datos de archivo excel a un almacenamiento fisico en BD
 
 Notebook-EDA
 01_Load_Structured_Database_Tokenization.ipynb: Carga y tokenización inicial de la base de datos para preparación de análisis.
@@ -80,6 +112,11 @@ Notebook-EDA
 04_Coneixonsql_EDA_Tokenization.ipynb: Análisis detallado de la estructura y frecuencia de tokens en la base de datos.
 05_Coneixonsql_EDA_Valuation.ipynb: Valora la calidad de datos y sugiere mejoras para análisis precisos.
 06_Main_Analysis.ipynb: Sintetiza análisis previos en un informe integrado y comprensivo.
+
+Notebook-BoW
+01_General_Information_Speeches.ipynb: Procesamiento de discursos y captura de informacion general.
+02_Analysis_Of_Polarization_Speeches.ipynb: Analisis de impacto y visualizacion de frecuencias
+03_Modeling_Of_Presidential_Speeches.ipynb: Identificacion de topicos relacionados entre si.
 
 ## Consideraciones Adicionales
 
