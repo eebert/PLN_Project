@@ -23,6 +23,6 @@ JSON_DIRECTORY_EDA = os.path.join(BASE_DIR, "data-EDA", "json")
 
 # --- Configuración Inicial ---
 
-ACCOUNT_NAME = "tfmejm"
-ACCOUNT_KEY = "A6HByzBaYzYANlZqqLYtLW4OVSYWDzqnMScFEgoqHTV/7OHgJFCXBsqKc9qHmjQUN8A5/BXnKZfy+AStDC6hlA=="
+ACCOUNT_NAME = "ACCOUNT_NAME"
+ACCOUNT_KEY = "ACCOUNT_KEY"
 CONTAINER_NAME = "discursos"

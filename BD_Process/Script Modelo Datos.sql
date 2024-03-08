@@ -2,7 +2,7 @@ USE DB_TablesPLN
 
 DROP TABLE dbo.DimDiscursos
 
--- Crear tabla de valores únicos
+-- Crear tabla de valores ï¿½nicos
 CREATE TABLE dbo.DimDiscursos (
   --Id int IDENTITY NOT NULL,
   id_speech int PRIMARY KEY,
@@ -28,7 +28,7 @@ USE DB_TablesPLN
 
 DROP TABLE dbo.DimTokenizacion
 
--- Crear tabla de valores únicos
+-- Crear tabla de valores unicos
 CREATE TABLE dbo.DimTokenizacion (
 	F1 varchar(50),
 	--id_speech int,
@@ -48,8 +48,8 @@ SELECT
 	t.[F1],
 	--s.id_speech,
 	t.[Nombre archivo],
-	t.[País],
-	t.[Año],
+	t.[Paï¿½s],
+	t.[Aï¿½o],
 	t.[Nombre Presidente],
 	t.[Apellido Presidente],
 	t.[palabras],
@@ -218,7 +218,7 @@ USE DB_TablesPLN
 
 DROP TABLE dbo.FactDiscursos
 
--- Crear tabla de valores únicos
+-- Crear tabla de valores ï¿½nicos
 CREATE TABLE dbo.FactDiscursos (
   Id int IDENTITY NOT NULL,
   NombreArchivo varchar(50),
